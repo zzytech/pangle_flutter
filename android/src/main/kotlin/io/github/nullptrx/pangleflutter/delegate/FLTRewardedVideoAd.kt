@@ -54,6 +54,8 @@ internal class FLTRewardedVideoAd(var target: Activity?, val loadingType: Pangle
 }
 
 internal class RewardAdInteractionImpl(var result: (Any) -> Unit?) : TTRewardVideoAd.RewardAdInteractionListener {
+  private var code = 0
+  private var message: String? = null
   private var verify = false
 
   // 视频广告播完验证奖励有效性回调，参数分别为是否有效，奖励数量，奖励名称
@@ -62,7 +64,9 @@ internal class RewardAdInteractionImpl(var result: (Any) -> Unit?) : TTRewardVid
   }
 
   override fun onSkippedVideo() {
-    invoke(-1, "skip")
+//    invoke(-1, "skip")
+    code = -1
+    message = "skip"
   }
 
   override fun onAdShow() {
@@ -75,7 +79,7 @@ internal class RewardAdInteractionImpl(var result: (Any) -> Unit?) : TTRewardVid
   }
 
   override fun onAdClose() {
-    invoke(verify = verify)
+    invoke(code = code, message = message, verify = verify)
   }
 
   override fun onVideoError() {

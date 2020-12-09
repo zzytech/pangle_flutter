@@ -41,6 +41,7 @@ class FLTFullScreenVideoAd(var target: Activity?, val loadingType: PangleLoading
    */
   @MainThread
   override fun onError(code: Int, message: String?) {
+    invoke(code, message)
   }
 
 
@@ -70,9 +71,14 @@ class FLTFullScreenVideoAd(var target: Activity?, val loadingType: PangleLoading
 
 class FullScreenVideoAdInteractionImpl(var result: (Any) -> Unit?) : TTFullScreenVideoAd.FullScreenVideoAdInteractionListener {
 
+  private var code: Int = 0
+  private var message: String? = null
+
   // 视频广告播完验证奖励有效性回调，参数分别为是否有效，奖励数量，奖励名称
   override fun onSkippedVideo() {
-    invoke(-1, "skip")
+//    invoke(-1, "skip")
+    code = -1
+    message = "skip"
   }
 
   override fun onAdShow() {
@@ -85,7 +91,7 @@ class FullScreenVideoAdInteractionImpl(var result: (Any) -> Unit?) : TTFullScree
   }
 
   override fun onAdClose() {
-    invoke()
+    invoke(code, message)
   }
 
   private fun invoke(code: Int = 0, message: String? = null) {
